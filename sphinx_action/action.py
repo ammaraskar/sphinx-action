@@ -11,9 +11,6 @@ def build_docs(docs_directory):
     pass
 
 
-def find_docs_directories(project_root_directory):
-    pass
-
-
-def build_all_docs(github_env):
-    pass
+def build_all_docs(github_env, docs_directories):
+    if len(docs_directories) == 0:
+        raise ValueError("Please provide at least one docs directory to build")

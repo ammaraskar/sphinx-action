@@ -34,6 +34,9 @@ jobs:
         args: "Docs/ some_other_docs_folder/"
 ```
 
+If you have multiple sphinx documentation folders, please specify them all in
+the `args`.
+
 If you don't want the fancy in-line warnings, just remove the `repo-token` in
 the `with` block.
 

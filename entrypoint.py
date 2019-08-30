@@ -17,9 +17,5 @@ if __name__ == "__main__":
         github_workspace=os.environ['GITHUB_WORKSPACE']
     )
 
-    if len(sys.argv) <= 1:
-        sys.stderr.write("Please provide at least one docs folder to build\n")
-        sys.exit(1)
-
     # The docs directories to build are passed in the arguments.
     action.build_all_docs(github_env, sys.argv[1:])
