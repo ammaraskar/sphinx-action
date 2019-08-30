@@ -1,5 +1,4 @@
 import collections
-import os
 import subprocess
 import tempfile
 
@@ -13,8 +12,9 @@ GithubEnvironment = collections.namedtuple(
 def build_docs(docs_directory):
     with tempfile.NamedTemporaryFile() as warnings_file:
         subprocess.check_call(
-            ['make', 'SPHINXOPTS=--no-color -w {}'.format(warnings_file.name),
-             'html'],
+            ['sphinx-build', '--no-color', '-w', warnings_file.name,
+             '-b', 'html',
+             '.', '_build'],
             cwd=docs_directory
         )
 

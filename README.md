@@ -28,10 +28,11 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v1
     - uses: ammaraskar/sphinx-action@master
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        args: "Docs/ some_other_docs_folder/"
+        args: "docs/ some_other_docs_folder/"
 ```
 
 If you have multiple sphinx documentation folders, please specify them all in
