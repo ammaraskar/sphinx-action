@@ -25,6 +25,9 @@ def build_all_docs(github_env, docs_directories):
     if len(docs_directories) == 0:
         raise ValueError("Please provide at least one docs directory to build")
 
+    print("Performing ls: ")
+    subprocess.call(['ls', '.'])
+
     for docs_dir in docs_directories:
         print("====================================")
         print("Building docs in {}".format(docs_dir))
