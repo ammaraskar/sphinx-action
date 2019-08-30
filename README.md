@@ -26,6 +26,7 @@ on:
 
 jobs:
   docs:
+    runs-on: ubuntu-latest
     steps:
     - uses: ammaraskar/sphinx-action@master
       with:
@@ -33,8 +34,8 @@ jobs:
         args: "Docs/ some_other_docs_folder/"
 ```
 
-If you don't want the fancy in-line warnings, just remove the `with: repo-token`
-block.
+If you don't want the fancy in-line warnings, just remove the `repo-token` in
+the `with` block.
 
 ## Running the tests
 
