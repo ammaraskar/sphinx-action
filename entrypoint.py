@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 from sphinx_action import action
 
 # This is the entrypoint called by Github when our action is run. All the
@@ -16,4 +17,9 @@ if __name__ == "__main__":
         github_workspace=os.environ['GITHUB_WORKSPACE']
     )
 
-    action.build_all_docs(github_env)
+    if len(sys.argv) <= 1:
+        sys.stderr.write("Please provide at least one docs folder to build\n")
+        sys.exit(1)
+
+    # The docs directories to build are passed in the arguments.
+    action.build_all_docs(github_env, sys.argv[1:])

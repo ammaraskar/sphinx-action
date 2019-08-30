@@ -1,0 +1,14 @@
+name: 'Sphinx Build'
+description: 'Builds documentation using Sphinx'
+author: 'Ammar Askar'
+branding:
+  icon: 'book'  
+  color: 'blue'
+inputs: 
+  repo-token:
+    description: 
+      The GITHUB_TOKEN secret. 
+      Needed for status check with in-line warnings and errors
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

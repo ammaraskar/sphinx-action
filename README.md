@@ -17,12 +17,24 @@ The main purposes of this action are:
 
 ## How to use
 
-Just add on the action. When it runs it'll search for a Sphinx Makefile in your
-directories, when it finds one it builds the documentation there.
+Create a workflow for the action, for example:
 
-If you want the fancy in-line warnings, follow the instructions here to
-authorize a `GITHUB_TOKEN` for the action: 
-https://developer.github.com/actions/managing-workflows/storing-secrets/#github-token-secret
+```yaml
+name: "Pull Request Docs Check"
+on: 
+- pull_request
+
+jobs:
+  docs:
+    steps:
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        args: "Docs/ some_other_docs_folder/"
+```
+
+If you don't want the fancy in-line warnings, just remove the `with: repo-token`
+block.
 
 ## Running the tests
 
