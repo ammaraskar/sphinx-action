@@ -1,6 +1,7 @@
 import collections
-import tempfile
+import os
 import subprocess
+import tempfile
 
 
 GithubEnvironment = collections.namedtuple(
@@ -25,6 +26,9 @@ def build_all_docs(github_env, docs_directories):
         raise ValueError("Please provide at least one docs directory to build")
 
     for docs_dir in docs_directories:
+        # Get to the real directory in the workspace.
+        docs_dir = os.path.join(github_env.github_workspace, docs_dir)
+
         print("====================================")
         print("Building docs in {}".format(docs_dir))
         print("====================================")
