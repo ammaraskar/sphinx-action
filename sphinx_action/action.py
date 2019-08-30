@@ -12,9 +12,12 @@ GithubEnvironment = collections.namedtuple(
 def build_docs(docs_directory):
     with tempfile.NamedTemporaryFile() as warnings_file:
         subprocess.check_call(
-            ['make', 'html', '--no-color', '-w', warnings_file],
+            ['make', 'SPHINXOPTS=--no-color -w {}'.format(warnings_file.name),
+             'html'],
             cwd=docs_directory
         )
+
+    return []
 
 
 def build_all_docs(github_env, docs_directories):

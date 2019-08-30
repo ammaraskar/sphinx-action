@@ -19,7 +19,10 @@ class TestAction(unittest.TestCase):
     def test_build_docs_no_errors_or_warnings(self):
         """Check that we correctly build docs when there's no errors or
         warnings"""
-        pass
+        self.assertEqual(
+            action.build_docs(os.path.join(TEST_PROJECTS_DIR, 'no_errors')),
+            []
+        )
 
 
 if __name__ == '__main__':
