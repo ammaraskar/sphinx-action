@@ -11,13 +11,13 @@ TEST_PROJECTS_DIR = os.path.join(
 class TestAction(unittest.TestCase):
 
     def test_build_docs_with_no_docs_directories(self):
+        """Make sure we bail out if they don't provide a single documentation
+        directory"""
         with self.assertRaises(ValueError):
-            # Make sure we bail out if they don't provide a single
-            # documentation directory.
             action.build_all_docs(None, [])
 
     def test_build_docs_no_errors_or_warnings(self):
-        """Check that we correctly build docs when there's no errors or 
+        """Check that we correctly build docs when there's no errors or
         warnings"""
         pass
 
