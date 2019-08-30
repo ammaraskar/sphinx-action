@@ -6,5 +6,6 @@ install:
   - pip install flake8 codecov coverage
 script:
   - flake8
-  - coverage run -m unittest
+  - coverage run --omit="*/tests*" -m unittest
+after_success:
   - codecov
