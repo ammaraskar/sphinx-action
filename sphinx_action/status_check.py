@@ -41,7 +41,7 @@ BASE_HEADERS = {
 
 
 def get_current_datetime_in_github_format():
-    return datetime.datetime.utcnow().replace(microsecond=0).isoformat()
+    return datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'
 
 
 def create_in_progress_status_check(github_token, head_sha, repo):
