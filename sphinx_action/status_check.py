@@ -54,6 +54,9 @@ def create_in_progress_status_check(github_token, head_sha, repo):
     url = 'https://api.github.com/repos/{repo}/check-runs'.format(repo=repo)
     r = requests.post(url, json=payload, headers=headers)
 
+    if r.status_code != 200:
+        print(r.json())
+
     r.raise_for_status()
     return r.json()['id']
 
@@ -80,5 +83,8 @@ def update_status_check(id, github_token, repo, check_output, conclusion=None):
     url = 'https://api.github.com/repos/{repo}/check-runs/{run_id}'.format(
         repo=repo, run_id=id)
     r = requests.patch(url, json=payload, headers=headers)
+
+    if r.status_code != 200:
+        print(r.json())
 
     r.raise_for_status()
