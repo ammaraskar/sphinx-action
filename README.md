@@ -35,10 +35,14 @@ jobs:
         args: "docs/ some_other_docs_folder/"
 ```
 
-If you have multiple sphinx documentation folders, please specify them all in
+* If you have any Python dependencies that your project needs (themes, 
+build tools, etc) then place them in a requirements.txt file inside your docs
+folder.
+
+* If you have multiple sphinx documentation folders, please specify them all in
 the `args`.
 
-If you don't want the fancy in-line warnings, just remove the `repo-token` in
+* If you don't want the fancy in-line warnings, just remove the `repo-token` in
 the `with` block.
 
 ## Running the tests

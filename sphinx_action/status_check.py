@@ -11,6 +11,13 @@ class StatusConclusion:
     SUCCESS = 'success'
     FAILURE = 'failure'
 
+    @staticmethod
+    def from_build_succeeded(succeeded):
+        if succeeded:
+            return StatusConclusion.SUCCESS
+        else:
+            return StatusConclusion.FAILURE
+
 
 class AnnotationLevel:
     NOTICE = 'notice'
@@ -51,18 +58,22 @@ def create_in_progress_status_check(github_token, head_sha, repo):
     return r.json()['id']
 
 
-def finish_status_check(id, conclusion, github_token, repo, check_output):
+def update_status_check(id, github_token, repo, check_output, conclusion=None):
     """Marks a status check as finished with the given conclusion and output"""
     annotations = [a._asdict() for a in check_output.annotations]
     payload = {
-        'completed_at': datetime.datetime.utcnow().isoformat(),
-        'conclusion': conclusion,
         'output': {
             'title': check_output.title,
             'summary': check_output.summary,
             'annotations': annotations
         }
     }
+    # Conclusion provided, let's mark the check as finished.
+    if conclusion:
+        payload['completed_at'] = datetime.datetime.utcnow().isoformat()
+        payload['status'] = 'completed'
+        payload['conclusion'] = conclusion
+
     headers = BASE_HEADERS.copy()
     headers['Authorization'] = 'Bearer {}'.format(github_token)
 

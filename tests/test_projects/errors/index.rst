@@ -9,7 +9,6 @@ Welcome to Errors's documentation!
 
 .. toctree::
    :maxdepth: 2
-   asdf/*
    :caption: Contents:
 
 

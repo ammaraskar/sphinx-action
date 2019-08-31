@@ -38,6 +38,37 @@ class TestStatusChecks(unittest.TestCase):
         )
 
     @mock.patch('sphinx_action.status_check.requests.patch')
+    def test_finish_status_check_in_progress(self, mock_patch):
+        mock_response = mock.NonCallableMock(requests.Response)
+        mock_response.status_code = 200
+
+        mock_patch.return_value = mock_response
+
+        check_output = status_check.CheckOutput(
+            title='Test Check', summary='Test In Progress', annotations=[]
+        )
+        status_check.update_status_check(
+            id=23, github_token='SecretToken96',
+            repo='ammaraskar/sphinx-action', check_output=check_output
+        )
+        mock_patch.assert_called_once_with(
+            'https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/23', # noqa
+            headers={
+                'Authorization': 'Bearer SecretToken96',
+                'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github.antiope-preview+json',
+                'User-Agent': 'sphinx-action'
+            },
+            json={
+                'output': {
+                    'title': 'Test Check',
+                    'summary': 'Test In Progress',
+                    'annotations': []
+                }
+            }
+        )
+
+    @mock.patch('sphinx_action.status_check.requests.patch')
     def test_finish_status_check_success(self, mock_patch):
         mock_response = mock.NonCallableMock(requests.Response)
         mock_response.status_code = 200
@@ -47,7 +78,7 @@ class TestStatusChecks(unittest.TestCase):
         check_output = status_check.CheckOutput(
             title='Test Check', summary='Test Finished', annotations=[]
         )
-        status_check.finish_status_check(
+        status_check.update_status_check(
             id=9, conclusion=status_check.StatusConclusion.SUCCESS,
             github_token='SecretToken2', repo='ammaraskar/sphinx-action',
             check_output=check_output
@@ -62,6 +93,7 @@ class TestStatusChecks(unittest.TestCase):
                 'User-Agent': 'sphinx-action'
             },
             json={
+                'status': 'completed',
                 'completed_at': mock.ANY,
                 'conclusion': 'success',
                 'output': {
@@ -94,7 +126,7 @@ class TestStatusChecks(unittest.TestCase):
         check_output = status_check.CheckOutput(
             title='Test Check', summary='Test Failed', annotations=annotations
         )
-        status_check.finish_status_check(
+        status_check.update_status_check(
             id=32, conclusion=status_check.StatusConclusion.FAILURE,
             github_token='SecretToken3', repo='ammaraskar/sphinx-action',
             check_output=check_output
@@ -111,6 +143,7 @@ class TestStatusChecks(unittest.TestCase):
             json={
                 'completed_at': mock.ANY,
                 'conclusion': 'failure',
+                'status': 'completed',
                 'output': {
                     'title': 'Test Check',
                     'summary': 'Test Failed',

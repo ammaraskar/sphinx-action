@@ -13,9 +13,6 @@ Welcome to Warnings and Errors's documentation!
 
 This is a thing with a `default` role.
 
-.. unknown::
-  asdasdads
-
 .. code-block:: ruby
             as
 
