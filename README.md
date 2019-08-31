@@ -14,6 +14,8 @@ The main purposes of this action are:
 
 * Allow contributors to get build errors on simple doc changes inline on Github
   without having to install Sphinx and build locally.
+  
+![Example Screenshot](https://i.imgur.com/Gk2W32O.png)
 
 ## How to use
 
