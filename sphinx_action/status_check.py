@@ -40,13 +40,17 @@ BASE_HEADERS = {
 }
 
 
+def get_current_datetime_in_github_format():
+    return datetime.datetime.utcnow().replace(microsecond=0).isoformat()
+
+
 def create_in_progress_status_check(github_token, head_sha, repo):
     """Creates an in-progress status check for Github."""
     payload = {
         'name': 'Sphinx Check',
         'head_sha': head_sha,
         'status': 'in_progress',
-        'started_at': datetime.datetime.utcnow().isoformat(),
+        'started_at': get_current_datetime_in_github_format(),
     }
     headers = BASE_HEADERS.copy()
     headers['Authorization'] = 'Bearer {}'.format(github_token)
@@ -73,7 +77,7 @@ def update_status_check(id, github_token, repo, check_output, conclusion=None):
     }
     # Conclusion provided, let's mark the check as finished.
     if conclusion:
-        payload['completed_at'] = datetime.datetime.utcnow().isoformat()
+        payload['completed_at'] = get_current_datetime_in_github_format()
         payload['status'] = 'completed'
         payload['conclusion'] = conclusion
 
