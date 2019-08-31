@@ -111,6 +111,7 @@ def build_all_docs(github_env, docs_directories):
     if github_env.token:
         status_id = status_check.create_in_progress_status_check(
             github_env.token, github_env.sha, github_env.repo)
+        print("[sphinx-action] Created check with id={}".format(status_id))
 
     build_success = True
     warnings = 0
@@ -132,6 +133,7 @@ def build_all_docs(github_env, docs_directories):
                 summary='Building with {} warnings'.format(warnings),
                 annotations=annotations
             )
+            print("[sphinx-action] Updating status check with ", check_output)
             status_check.update_status_check(
                 status_id, github_env.token, github_env.repo, check_output
             )

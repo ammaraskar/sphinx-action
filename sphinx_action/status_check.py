@@ -88,7 +88,7 @@ def update_status_check(id, github_token, repo, check_output, conclusion=None):
         repo=repo, run_id=id)
     r = requests.patch(url, json=payload, headers=headers)
 
-    if r.status_code != 200:
-        print(r.json())
+    print("[sphinx-action] Update status code", r.status_code)
+    print("[sphinx-action] Update status response", r.json())
 
     r.raise_for_status()
