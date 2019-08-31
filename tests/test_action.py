@@ -76,7 +76,7 @@ class TestAction(unittest.TestCase):
 
         self.assertTrue(annotations[2].path.endswith('notintoc.rst'))
         self.assertEqual(annotations[2].start_line, 1)
-        self.assertEqual(annotations[2].end_line, 1)      
+        self.assertEqual(annotations[2].end_line, 1)
         self.assertEqual(
             "document isn't included in any toctree", annotations[2].message
         )
