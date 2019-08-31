@@ -117,7 +117,7 @@ class TestAction(unittest.TestCase):
         self.assertEqual(update_mock.call_args_list[1][0][0], 42)
         self.assertEqual(update_mock.call_args_list[2][0][0], 42)
 
-        update_mock.assert_any_call(
+        update_mock.assert_called_with(
             42, 'SecretToken1', 'ammaraskar/sphinx-action',
             status_check.CheckOutput(
                 title='Sphinx Documentation Build',
@@ -150,7 +150,7 @@ class TestAction(unittest.TestCase):
         self.assertEqual(update_mock.call_args_list[1][0][0], 41)
         self.assertEqual(update_mock.call_args_list[2][0][0], 41)
 
-        update_mock.assert_any_call(
+        update_mock.assert_called_with(
             41, 'SecretToken1', 'ammaraskar/sphinx-action',
             status_check.CheckOutput(
                 title='Sphinx Documentation Build',
