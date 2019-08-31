@@ -61,6 +61,7 @@ maximum 1 argument(s) allowed, 2 supplied.
 
         file_and_line = extract_line_information(file_and_line)
         if not file_and_line:
+            print("[sphinx-action] Unable to extract line number")
             continue
         file_name, line_number = file_and_line
 
@@ -136,13 +137,14 @@ def build_all_docs(github_env, docs_directories):
                 status_id, github_env.token, github_env.repo, check_output
             )
 
+    status_message = 'Build {} with {} warnings'.format(
+        'succeeded' if build_success else 'failed', warnings)
+    print(status_message)
+
     if github_env.token:
         check_output = status_check.CheckOutput(
             title='Sphinx Documentation Build',
-            summary='Build {} with {} warnings'.format(
-                'succeeded' if build_success else 'failed', warnings
-            ),
-            annotations=[]
+            summary=status_message, annotations=[]
         )
         conclusion = status_check.StatusConclusion.from_build_succeeded(
             build_success)
