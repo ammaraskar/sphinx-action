@@ -61,7 +61,6 @@ maximum 1 argument(s) allowed, 2 supplied.
 
         file_and_line = extract_line_information(file_and_line)
         if not file_and_line:
-            print("[sphinx-action] Unable to extract line number")
             continue
         file_name, line_number = file_and_line
 

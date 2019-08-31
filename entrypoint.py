@@ -12,11 +12,11 @@ if __name__ == "__main__":
         # For the GITHUB_TOKEN, we want to be able to proceed even if the
         # action isn't given a token. Thus we do a .get() to get a default
         # value of None if it doesn't exist.
-        token=os.environ.get('GITHUB_TOKEN')
+        token=os.environ.get('INPUT_REPO-TOKEN')
     )
 
     if not github_env.token:
-        print("[sphinx-action] Running without GITHUB_TOKEN")
+        print("[sphinx-action] Running without repo token")
 
     # The docs directories to build are passed in the arguments.
     action.build_all_docs(github_env, sys.argv[1:])
