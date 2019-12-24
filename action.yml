@@ -24,7 +24,8 @@ inputs:
   pre-build-command:
     description:
       Run before the build command, you can use this to install system level
-      dependencies.
+      dependencies, for example with
+      "apt-get update -y && apt-get install -y perl"
     required: false
 runs:
   using: 'docker'

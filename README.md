@@ -54,10 +54,23 @@ If you wish to customize the command used to build the docs (defaults to
 example, to invoke sphinx-build directly you can use:
 
 ```yaml
+    - uses: ammaraskar/sphinx-action@master
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         build-command: "sphinx-build -b html . _build"
         args: "docs/"
+```
+
+If there's system level dependencies that need to be installed for your
+build, you can use the `pre-build-command` argument like so:
+
+```yaml
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
+        build-command: "make latexpdf"
+        args: "docs2/"
 ```
 
 ## Running the tests
