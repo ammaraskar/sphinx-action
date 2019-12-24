@@ -9,6 +9,12 @@ inputs:
     description: 
       The GITHUB_TOKEN secret.
       Needed for status check with in-line warnings and errors.
+    # This is a horrible hack, we need the default value to be
+    # ${{ secrets.GITHUB_TOKEN }}
+    # but, if we put this value there directly then Github actions will try
+    # to interpolate it and fail.
+    # So instead, we use an expression that evaluates to the value we want,
+    # there might be an easier way to do this.
     default: ${{ format('${{{{ secrets.GITHUB_TOKEN }}}}') }}
   build-command:
     description:
