@@ -7,6 +7,11 @@ from sphinx_action import action
 # Github specific setup is done here to make it easy to test the action code
 # in isolation.
 if __name__ == "__main__":
+    if 'INPUT_PRE-BUILD-COMMAND' in os.environ:
+        pre_command = os.environ['INPUT_PRE-BUILD-COMMAND']
+        print("Running: {}".format(pre_command))
+        os.system(pre_command)
+
     github_env = action.GithubEnvironment(
         sha=os.environ['GITHUB_SHA'], repo=os.environ['GITHUB_REPOSITORY'],
         # For the GITHUB_TOKEN, we want to be able to proceed even if the

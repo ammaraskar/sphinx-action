@@ -21,6 +21,11 @@ inputs:
       The command used to build your documentation (defaults to `make html`)
     required: false
     default: make html
+  pre-build-command:
+    description:
+      Run before the build command, you can use this to install system level
+      dependencies.
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
