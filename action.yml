@@ -5,20 +5,19 @@ branding:
   icon: 'book'
   color: 'blue'
 inputs:
+  docs-folder:
+    description:
+      The folder containing your sphinx docs.
+    required: true
+    default: "docs/"
   repo-token:
     description: 
       The GITHUB_TOKEN secret.
-      Needed for status check with in-line warnings and errors.
-    # This is a horrible hack, we need the default value to be
-    # ${{ secrets.GITHUB_TOKEN }}
-    # but, if we put this value there directly then Github actions will try
-    # to interpolate it and fail.
-    # So instead, we use an expression that evaluates to the value we want,
-    # there might be an easier way to do this.
-    default: ${{ format('${{{{ secrets.GITHUB_TOKEN }}}}') }}
+      Needed for status check with in-line warnings and errors. Check out the
+      full README to see how to fill this.
   build-command:
     description:
-      The command used to build your documentation (defaults to `make html`)
+      The command used to build your documentation.
     required: false
     default: make html
   pre-build-command:

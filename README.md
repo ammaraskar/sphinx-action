@@ -33,16 +33,16 @@ jobs:
     - uses: actions/checkout@v1
     - uses: ammaraskar/sphinx-action@master
       with:
+        docs-folder: "docs/"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        args: "docs/ some_other_docs_folder/"
 ```
 
 * If you have any Python dependencies that your project needs (themes, 
 build tools, etc) then place them in a requirements.txt file inside your docs
 folder.
 
-* If you have multiple sphinx documentation folders, please specify them all in
-the `args`.
+* If you have multiple sphinx documentation folders, please use multiple
+  `uses` blocks.
 
 * If you don't want the fancy in-line warnings, just remove the `repo-token` in
 the `with` block.
@@ -56,9 +56,9 @@ example, to invoke sphinx-build directly you can use:
 ```yaml
     - uses: ammaraskar/sphinx-action@master
       with:
+        docs-folder: "docs/"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         build-command: "sphinx-build -b html . _build"
-        args: "docs/"
 ```
 
 If there's system level dependencies that need to be installed for your
@@ -67,10 +67,10 @@ build, you can use the `pre-build-command` argument like so:
 ```yaml
     - uses: ammaraskar/sphinx-action@master
       with:
+        docs-folder: "docs2/"
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
         build-command: "make latexpdf"
-        args: "docs2/"
 ```
 
 ## Running the tests

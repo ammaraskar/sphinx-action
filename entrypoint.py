@@ -24,5 +24,5 @@ if __name__ == "__main__":
     if not github_env.token:
         print("[sphinx-action] Running without repo token")
 
-    # The docs directories to build are passed in the arguments.
-    action.build_all_docs(github_env, sys.argv[1:])
+    # We build the docs folder passed in the inputs.
+    action.build_all_docs(github_env, [os.environ.get('INPUT_DOCS-FOLDER')])
