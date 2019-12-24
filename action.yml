@@ -7,9 +7,9 @@ branding:
 inputs:
   repo-token:
     description: 
-      The GITHUB_TOKEN secret. 
-      Needed for status check with in-line warnings and errors
-    default: '"${{ secrets.GITHUB_TOKEN }}"'
+      The GITHUB_TOKEN secret.
+      Set to "${{ secrets.GITHUB_TOKEN }}" for status check with in-line
+      warnings and errors.
   build-command:
     description:
       The command used to build your documentation (defaults to `make html`)
