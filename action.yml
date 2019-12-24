@@ -9,6 +9,7 @@ inputs:
     description: 
       The GITHUB_TOKEN secret. 
       Needed for status check with in-line warnings and errors
+    default: '"${{ secrets.GITHUB_TOKEN }}"'
   build-command:
     description:
       The command used to build your documentation (defaults to `make html`)
