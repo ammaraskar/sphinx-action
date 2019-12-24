@@ -47,6 +47,19 @@ the `args`.
 * If you don't want the fancy in-line warnings, just remove the `repo-token` in
 the `with` block.
 
+## Advanced Usage
+
+If you wish to customize the command used to build the docs (defaults to
+`make html`), you can provide a `build-command` in the `with` block. For
+example, to invoke sphinx-build directly you can use:
+
+```yaml
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        build-command: "sphinx-build -b html . _build"
+        args: "docs/"
+```
+
 ## Running the tests
 
 `python -m unittest`

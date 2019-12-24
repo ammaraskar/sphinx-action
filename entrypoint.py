@@ -12,7 +12,8 @@ if __name__ == "__main__":
         # For the GITHUB_TOKEN, we want to be able to proceed even if the
         # action isn't given a token. Thus we do a .get() to get a default
         # value of None if it doesn't exist.
-        token=os.environ.get('INPUT_REPO-TOKEN')
+        token=os.environ.get('INPUT_REPO-TOKEN'),
+        build_command=os.environ.get('INPUT_BUILD-COMMAND')
     )
 
     if not github_env.token:

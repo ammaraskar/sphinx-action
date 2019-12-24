@@ -44,6 +44,15 @@ class TestAction(unittest.TestCase):
         """Check that we correctly build docs when there's no errors or
         warnings"""
         return_code, annotations = action.build_docs(
+            'make html',
+            os.path.join(TEST_PROJECTS_DIR, 'no_errors')
+        )
+        self.assertEqual(return_code, 0)
+        self.assertEqual(annotations, [])
+
+    def test_build_with_custom_command(self):
+        return_code, annotations = action.build_docs(
+            'sphinx-build -b html . _build',
             os.path.join(TEST_PROJECTS_DIR, 'no_errors')
         )
         self.assertEqual(return_code, 0)
@@ -51,12 +60,14 @@ class TestAction(unittest.TestCase):
 
     def test_build_docs_errors(self):
         return_code, annotations = action.build_docs(
+            'make html',
             os.path.join(TEST_PROJECTS_DIR, 'errors')
         )
         self.assertEqual(annotations, [])
 
     def test_build_docs_warnings(self):
         return_code, annotations = action.build_docs(
+            'make html',
             os.path.join(TEST_PROJECTS_DIR, 'warnings')
         )
         self.assertEqual(return_code, 0)
@@ -83,7 +94,8 @@ class TestAction(unittest.TestCase):
 
     def test_build_docs_warnings_and_errors(self):
         return_code, annotations = action.build_docs(
-                os.path.join(TEST_PROJECTS_DIR, 'warnings_and_errors')
+            'make html',
+            os.path.join(TEST_PROJECTS_DIR, 'warnings_and_errors')
         )
         self.assertNotEqual(return_code, 0)
         self.assertEqual(len(annotations), 1)
@@ -103,7 +115,7 @@ class TestAction(unittest.TestCase):
         action.build_all_docs(
             action.GithubEnvironment(
                 sha='sha1hash', repo='ammaraskar/sphinx-action',
-                token='SecretToken1'
+                token='SecretToken1', build_command='make html'
             ),
             [os.path.join(TEST_PROJECTS_DIR, 'no_errors'),
              os.path.join(TEST_PROJECTS_DIR, 'warnings')]
@@ -136,7 +148,7 @@ class TestAction(unittest.TestCase):
             action.build_all_docs(
                 action.GithubEnvironment(
                     sha='sha1hash', repo='ammaraskar/sphinx-action',
-                    token='SecretToken1'
+                    token='SecretToken1', build_command='make html'
                 ),
                 [os.path.join(TEST_PROJECTS_DIR, 'no_errors'),
                  os.path.join(TEST_PROJECTS_DIR, 'warnings_and_errors')]

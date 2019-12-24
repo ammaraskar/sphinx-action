@@ -2,12 +2,13 @@ import collections
 import subprocess
 import tempfile
 import os
+import shlex
 
 from sphinx_action import status_check
 
 
 GithubEnvironment = collections.namedtuple(
-    'GithubEnvironment', ['sha', 'repo', 'token']
+    'GithubEnvironment', ['sha', 'repo', 'token', 'build_command']
 )
 
 
@@ -80,7 +81,10 @@ maximum 1 argument(s) allowed, 2 supplied.
     return annotations
 
 
-def build_docs(docs_directory):
+def build_docs(build_command, docs_directory):
+    if not build_command:
+        raise ValueError("Build command may not be empty")
+
     docs_requirements = os.path.join(docs_directory, 'requirements.txt')
     if os.path.exists(docs_requirements):
         subprocess.check_call(['pip', 'install', '-r', docs_requirements])
@@ -90,11 +94,20 @@ def build_docs(docs_directory):
         os.unlink(log_file)
 
     sphinx_options = '--keep-going --no-color -w "{}"'.format(log_file)
-    return_code = subprocess.call(
-        ['make', 'html'],
-        env=dict(os.environ, SPHINXOPTS=sphinx_options),
-        cwd=docs_directory
-    )
+    # If we're using make, pass the options as part of the SPHINXOPTS
+    # environment variable, otherwise pass them straight into the command.
+    build_command = shlex.split(build_command)
+    if build_command[0] == 'make':
+        return_code = subprocess.call(
+            build_command,
+            env=dict(os.environ, SPHINXOPTS=sphinx_options),
+            cwd=docs_directory
+        )
+    else:
+        return_code = subprocess.call(
+            build_command + shlex.split(sphinx_options),
+            cwd=docs_directory
+        )
 
     with open(log_file, 'r') as f:
         annotations = parse_sphinx_warnings_log(f.readlines())
@@ -121,7 +134,9 @@ def build_all_docs(github_env, docs_directories):
         print("Building docs in {}".format(docs_dir))
         print("====================================")
 
-        return_code, annotations = build_docs(docs_dir)
+        return_code, annotations = build_docs(
+            github_env.build_command, docs_dir
+        )
         if return_code != 0:
             build_success = False
 

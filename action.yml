@@ -2,13 +2,18 @@ name: 'Sphinx Build'
 description: 'Builds documentation using Sphinx'
 author: 'Ammar Askar'
 branding:
-  icon: 'book'  
+  icon: 'book'
   color: 'blue'
-inputs: 
+inputs:
   repo-token:
     description: 
       The GITHUB_TOKEN secret. 
       Needed for status check with in-line warnings and errors
+  build-command:
+    description:
+      The command used to build your documentation (defaults to `make html`)
+    required: false
+    default: make html
 runs:
   using: 'docker'
   image: 'Dockerfile'
