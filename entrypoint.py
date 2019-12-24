@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import sys
 from sphinx_action import action
 
 # This is the entrypoint called by Github when our action is run. All the
