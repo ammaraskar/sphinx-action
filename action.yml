@@ -8,8 +8,8 @@ inputs:
   repo-token:
     description: 
       The GITHUB_TOKEN secret.
-      Set to "${{{{ secrets.GITHUB_TOKEN }}}}" for status check with in-line
-      warnings and errors.
+      Needed for status check with in-line warnings and errors.
+    default: ${{ format('${{{{ secrets.GITHUB_TOKEN }}}}') }}
   build-command:
     description:
       The command used to build your documentation (defaults to `make html`)
