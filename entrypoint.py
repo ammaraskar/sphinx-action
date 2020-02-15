@@ -18,14 +18,14 @@ if __name__ == "__main__":
     # For pull requests, GITHUB_SHA points to the merge commit for some reason.
     # We need the last commit to assosciate the run properly so we resolve that
     # using the event details here.
-    if os.environ["GITHUB_EVENT_NAME"] == 'pull_request':
-        with open(os.environ["GITHUB_EVENT_PATH"], 'r') as f:
+    if os.environ["GITHUB_EVENT_NAME"] == "pull_request":
+        with open(os.environ["GITHUB_EVENT_PATH"], "r") as f:
             event = json.load(f)
-            sha = event['pull_request']['head']['sha']
+            sha = event["pull_request"]["head"]["sha"]
             print("[sphinx-action] Using pull request sha: {}".format(sha))
 
     github_env = action.GithubEnvironment(
-        sha=os.environ["GITHUB_SHA"],
+        sha=sha,
         repo=os.environ["GITHUB_REPOSITORY"],
         # For the GITHUB_TOKEN, we want to be able to proceed even if the
         # action isn't given a token. Thus we do a .get() to get a default
