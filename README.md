@@ -47,6 +47,55 @@ folder.
 * If you don't want the fancy in-line warnings, just remove the `repo-token` in
 the `with` block.
 
+For a full example repo using this action including advanced usage, take a look
+at https://github.com/ammaraskar/sphinx-action-test
+
+## Great Actions to Pair With
+
+Some really good actions that work well with this one are
+[`actions/upload-artifact`](https://github.com/actions/upload-artifact)
+and [`ad-m/github-push-action`](https://github.com/ad-m/github-push-action).
+
+You can use these to make built HTML and PDFs available as artifacts:
+
+```yaml
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DocumentationHTML
+        path: docs/_build/html/
+```
+
+Or to push docs changes automatically to a `gh-pages` branch:
+
+<details><summary>Code for your workflow</summary>
+<p>
+
+```yaml
+    - name: Commit documentation changes
+      run: |
+        git clone https://github.com/ammaraskar/sphinx-action-test.git --branch gh-pages --single-branch gh-pages
+        cp -r docs/_build/html/* gh-pages/
+        cd gh-pages
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update documentation" -a || true
+        # The above command will fail if no changes were present, so we ignore
+        # the return code.
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        directory: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+</p>
+</details>
+
+For a full fledged example of this in action take a look at:
+https://github.com/ammaraskar/sphinx-action-test
+
 ## Advanced Usage
 
 If you wish to customize the command used to build the docs (defaults to
