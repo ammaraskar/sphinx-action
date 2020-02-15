@@ -9,17 +9,16 @@ from sphinx_action import action
 if __name__ == "__main__":
     print("[sphinx-action] Starting sphinx-action build.")
 
-    print("::warning file=docs/index.rst,line=1,col=5::Test Warning")
-
     if "INPUT_PRE-BUILD-COMMAND" in os.environ:
         pre_command = os.environ["INPUT_PRE-BUILD-COMMAND"]
         print("Running: {}".format(pre_command))
         os.system(pre_command)
 
     sha = os.environ["GITHUB_SHA"]
-    # For pull requests, GITHUB_SHA points to the merge commit for some reason.
-    # We need the last commit to assosciate the run properly so we resolve that
-    # using the event details here.
+    # Currently pull requests provide a token that don't support adding
+    # check annotations, however there is another API based on putting
+    # certain lines in stdout we can use in it's place. Hence if this is
+    # a pull request, 
     if os.environ["GITHUB_EVENT_NAME"] == "pull_request":
         with open(os.environ["GITHUB_EVENT_PATH"], "r") as f:
             event = json.load(f)
