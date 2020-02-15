@@ -7,8 +7,7 @@ from sphinx_action import status_check
 
 
 class TestStatusChecks(unittest.TestCase):
-
-    @mock.patch('sphinx_action.status_check.requests.post')
+    @mock.patch("sphinx_action.status_check.requests.post")
     def test_create_check(self, mock_post):
         mock_response = mock.NonCallableMock(requests.Response)
         mock_response.status_code = 200
@@ -17,27 +16,27 @@ class TestStatusChecks(unittest.TestCase):
         mock_post.return_value = mock_response
 
         id = status_check.create_in_progress_status_check(
-            'SecretToken', 'sha_hash', 'ammaraskar/sphinx-action'
+            "SecretToken", "sha_hash", "ammaraskar/sphinx-action"
         )
 
         self.assertEqual(id, 4)
         mock_post.assert_called_once_with(
-            'https://api.github.com/repos/ammaraskar/sphinx-action/check-runs',
+            "https://api.github.com/repos/ammaraskar/sphinx-action/check-runs",
             headers={
-                'Authorization': 'Bearer SecretToken',
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.antiope-preview+json',
-                'User-Agent': 'sphinx-action'
+                "Authorization": "Bearer SecretToken",
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github.antiope-preview+json",
+                "User-Agent": "sphinx-action",
             },
             json={
-                'name': 'Sphinx Check',
-                'head_sha': 'sha_hash',
-                'status': 'in_progress',
-                'started_at': mock.ANY
-            }
+                "name": "Sphinx Check",
+                "head_sha": "sha_hash",
+                "status": "in_progress",
+                "started_at": mock.ANY,
+            },
         )
 
-    @mock.patch('sphinx_action.status_check.requests.patch')
+    @mock.patch("sphinx_action.status_check.requests.patch")
     def test_finish_status_check_in_progress(self, mock_patch):
         mock_response = mock.NonCallableMock(requests.Response)
         mock_response.status_code = 200
@@ -45,30 +44,32 @@ class TestStatusChecks(unittest.TestCase):
         mock_patch.return_value = mock_response
 
         check_output = status_check.CheckOutput(
-            title='Test Check', summary='Test In Progress', annotations=[]
+            title="Test Check", summary="Test In Progress", annotations=[]
         )
         status_check.update_status_check(
-            id=23, github_token='SecretToken96',
-            repo='ammaraskar/sphinx-action', check_output=check_output
+            id=23,
+            github_token="SecretToken96",
+            repo="ammaraskar/sphinx-action",
+            check_output=check_output,
         )
         mock_patch.assert_called_once_with(
-            'https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/23', # noqa
+            "https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/23",  # noqa
             headers={
-                'Authorization': 'Bearer SecretToken96',
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.antiope-preview+json',
-                'User-Agent': 'sphinx-action'
+                "Authorization": "Bearer SecretToken96",
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github.antiope-preview+json",
+                "User-Agent": "sphinx-action",
             },
             json={
-                'output': {
-                    'title': 'Test Check',
-                    'summary': 'Test In Progress',
-                    'annotations': []
+                "output": {
+                    "title": "Test Check",
+                    "summary": "Test In Progress",
+                    "annotations": [],
                 }
-            }
+            },
         )
 
-    @mock.patch('sphinx_action.status_check.requests.patch')
+    @mock.patch("sphinx_action.status_check.requests.patch")
     def test_finish_status_check_success(self, mock_patch):
         mock_response = mock.NonCallableMock(requests.Response)
         mock_response.status_code = 200
@@ -76,35 +77,37 @@ class TestStatusChecks(unittest.TestCase):
         mock_patch.return_value = mock_response
 
         check_output = status_check.CheckOutput(
-            title='Test Check', summary='Test Finished', annotations=[]
+            title="Test Check", summary="Test Finished", annotations=[]
         )
         status_check.update_status_check(
-            id=9, conclusion=status_check.StatusConclusion.SUCCESS,
-            github_token='SecretToken2', repo='ammaraskar/sphinx-action',
-            check_output=check_output
+            id=9,
+            conclusion=status_check.StatusConclusion.SUCCESS,
+            github_token="SecretToken2",
+            repo="ammaraskar/sphinx-action",
+            check_output=check_output,
         )
 
         mock_patch.assert_called_once_with(
-            'https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/9', # noqa
+            "https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/9",  # noqa
             headers={
-                'Authorization': 'Bearer SecretToken2',
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.antiope-preview+json',
-                'User-Agent': 'sphinx-action'
+                "Authorization": "Bearer SecretToken2",
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github.antiope-preview+json",
+                "User-Agent": "sphinx-action",
             },
             json={
-                'status': 'completed',
-                'completed_at': mock.ANY,
-                'conclusion': 'success',
-                'output': {
-                    'title': 'Test Check',
-                    'summary': 'Test Finished',
-                    'annotations': []
-                }
-            }
+                "status": "completed",
+                "completed_at": mock.ANY,
+                "conclusion": "success",
+                "output": {
+                    "title": "Test Check",
+                    "summary": "Test Finished",
+                    "annotations": [],
+                },
+            },
         )
 
-    @mock.patch('sphinx_action.status_check.requests.patch')
+    @mock.patch("sphinx_action.status_check.requests.patch")
     def test_finish_status_check_fail(self, mock_patch):
         mock_response = mock.NonCallableMock(requests.Response)
         mock_response.status_code = 200
@@ -113,60 +116,69 @@ class TestStatusChecks(unittest.TestCase):
 
         annotations = [
             status_check.CheckAnnotation(
-                path='Doc/using/index.rst', start_line=3, end_line=3,
+                path="Doc/using/index.rst",
+                start_line=3,
+                end_line=3,
                 annotation_level=status_check.AnnotationLevel.WARNING,
-                message='Unexpected section title.'
+                message="Unexpected section title.",
             ),
             status_check.CheckAnnotation(
-                path='Doc/distutils/disclaimer.rst', start_line=1, end_line=1,
+                path="Doc/distutils/disclaimer.rst",
+                start_line=1,
+                end_line=1,
                 annotation_level=status_check.AnnotationLevel.FAILURE,
-                message=':ref:`asdf` not found.'
-            )
+                message=":ref:`asdf` not found.",
+            ),
         ]
         check_output = status_check.CheckOutput(
-            title='Test Check', summary='Test Failed', annotations=annotations
+            title="Test Check", summary="Test Failed", annotations=annotations
         )
         status_check.update_status_check(
-            id=32, conclusion=status_check.StatusConclusion.FAILURE,
-            github_token='SecretToken3', repo='ammaraskar/sphinx-action',
-            check_output=check_output
+            id=32,
+            conclusion=status_check.StatusConclusion.FAILURE,
+            github_token="SecretToken3",
+            repo="ammaraskar/sphinx-action",
+            check_output=check_output,
         )
 
         mock_patch.assert_called_once_with(
-            'https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/32', # noqa
+            "https://api.github.com/repos/ammaraskar/sphinx-action/check-runs/32",  # noqa
             headers={
-                'Authorization': 'Bearer SecretToken3',
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.antiope-preview+json',
-                'User-Agent': 'sphinx-action'
+                "Authorization": "Bearer SecretToken3",
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github.antiope-preview+json",
+                "User-Agent": "sphinx-action",
             },
             json={
-                'completed_at': mock.ANY,
-                'conclusion': 'failure',
-                'status': 'completed',
-                'output': {
-                    'title': 'Test Check',
-                    'summary': 'Test Failed',
-                    'annotations': [
+                "completed_at": mock.ANY,
+                "conclusion": "failure",
+                "status": "completed",
+                "output": {
+                    "title": "Test Check",
+                    "summary": "Test Failed",
+                    "annotations": [
                         {
-                            'path': 'Doc/using/index.rst',
-                            'start_line': 3, 'end_line': 3,
-                            'annotation_level': 'warning',
-                            'message': 'Unexpected section title.'
+                            "path": "Doc/using/index.rst",
+                            "start_line": 3,
+                            "end_line": 3,
+                            "annotation_level": "warning",
+                            "message": "Unexpected section title.",
                         },
                         {
-                            'path': 'Doc/distutils/disclaimer.rst',
-                            'start_line': 1, 'end_line': 1,
-                            'annotation_level': 'failure',
-                            'message': ':ref:`asdf` not found.'
-                        }
-                    ]
-                }
-            }
+                            "path": "Doc/distutils/disclaimer.rst",
+                            "start_line": 1,
+                            "end_line": 1,
+                            "annotation_level": "failure",
+                            "message": ":ref:`asdf` not found.",
+                        },
+                    ],
+                },
+            },
         )
 
 
-create_response = json.loads("""
+create_response = json.loads(
+    """
 {
   "id": 4,
   "head_sha": "ce587453ced02b1526dfb4cb910479d431683101",
@@ -212,8 +224,9 @@ create_response = json.loads("""
     "updated_at": "2017-07-08T16:18:44-04:00"
   },
   "pull_requests": []
-}""")
+}"""
+)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

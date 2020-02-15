@@ -76,3 +76,9 @@ build, you can use the `pre-build-command` argument like so:
 ## Running the tests
 
 `python -m unittest`
+
+## Formatting
+
+Please use [black](https://github.com/psf/black) for formatting:
+
+`black entrypoint.py sphinx_action tests`
