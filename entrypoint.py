@@ -6,6 +6,8 @@ from sphinx_action import action
 # Github specific setup is done here to make it easy to test the action code
 # in isolation.
 if __name__ == "__main__":
+    print("[sphinx-action] Starting sphinx-action build.")
+
     if "INPUT_PRE-BUILD-COMMAND" in os.environ:
         pre_command = os.environ["INPUT_PRE-BUILD-COMMAND"]
         print("Running: {}".format(pre_command))
