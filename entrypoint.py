@@ -9,10 +9,11 @@ from sphinx_action import action
 if __name__ == "__main__":
     print("[sphinx-action] Starting sphinx-action build.")
 
+    print("::warning file=docs/index.rst,line=1,col=5::Test Warning")
+
     if "INPUT_PRE-BUILD-COMMAND" in os.environ:
         pre_command = os.environ["INPUT_PRE-BUILD-COMMAND"]
         print("Running: {}".format(pre_command))
-        print("::log-command ::{}".format(pre_command))
         os.system(pre_command)
 
     sha = os.environ["GITHUB_SHA"]
