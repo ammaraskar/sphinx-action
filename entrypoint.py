@@ -11,6 +11,12 @@ if __name__ == "__main__":
         print("Running: {}".format(pre_command))
         os.system(pre_command)
 
+    sha = os.environ["GITHUB_SHA"]
+    # For pull requests we use the HEAD_REF to avoid assosciating the run with
+    # the merge commit.
+    if "GITHUB_HEAD_REF" in os.environ:
+        sha = os.environ["GITHUB_HEAD_REF"]
+
     github_env = action.GithubEnvironment(
         sha=os.environ["GITHUB_SHA"],
         repo=os.environ["GITHUB_REPOSITORY"],
