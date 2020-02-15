@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import json
 from sphinx_action import action
 
 # This is the entrypoint called by Github when our action is run. All the
@@ -14,11 +15,14 @@ if __name__ == "__main__":
         os.system(pre_command)
 
     sha = os.environ["GITHUB_SHA"]
-    # For pull requests we use the HEAD_REF to avoid assosciating the run with
-    # the merge commit.
-    if "GITHUB_HEAD_REF" in os.environ:
-        sha = os.environ["GITHUB_HEAD_REF"]
-        print("[sphinx-action] Using HEAD_REF: {}".format(sha))
+    # For pull requests, GITHUB_SHA points to the merge commit for some reason.
+    # We need the last commit to assosciate the run properly so we resolve that
+    # using the event details here.
+    if os.environ["GITHUB_EVENT_NAME"] == 'pull_request':
+        with open(os.environ["GITHUB_EVENT_PATH"], 'r') as f:
+            event = json.load(f)
+            sha = event['pull_request']['head']['sha']
+            print("[sphinx-action] Using pull request sha: {}".format(sha))
 
     github_env = action.GithubEnvironment(
         sha=os.environ["GITHUB_SHA"],
