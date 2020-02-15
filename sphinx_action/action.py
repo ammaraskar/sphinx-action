@@ -13,11 +13,23 @@ GithubEnvironment = collections.namedtuple(
 
 
 def extract_line_information(line_information):
+    r"""Lines from sphinx log files look like this
+
+        C:\Users\ammar\workspace\sphinx-action\tests\test_projects\warnings\index.rst:22: WARNING: Problems with "include" directive path:
+        InputError: [Errno 2] No such file or directory: 'I_DONT_EXIST'.
+
+        /home/users/ammar/workspace/sphix-action/tests/test_projects/warnings/index.rst:22: WARNING: Problems with "include" directive path:
+        InputError: [Errno 2] No such file or directory: 'I_DONT_EXIST'.
+
+        /home/users/ammar/workspace/sphix-action/tests/test_projects/warnings/index.rst: Something went wrong with this whole ifle
+
+    This method is responsible for parsing out the line number and file name from these lines.
+    """
     file_and_line = line_information.split(':')
     # This is a dirty windows specific hack to deal with drive letters in the
     # start of the file-path, i.e D:\
     if len(file_and_line[0]) == 1:
-        # If the first component is just one letter, we did an accindetal split
+        # If the first component is just one letter, we did an accidental split
         file_and_line[1] = file_and_line[0] + ':' + file_and_line[1]
         # Join the first component back up with the second and discard it.
         file_and_line = file_and_line[1:]
@@ -98,12 +110,21 @@ def build_docs(build_command, docs_directory):
     # environment variable, otherwise pass them straight into the command.
     build_command = shlex.split(build_command)
     if build_command[0] == 'make':
+        # Pass the -e option into `make`, this is specified to be
+        #   Cause environment variables, including those with null values, to override macro assignments within makefiles.
+        # which is exactly what we want.
+        build_command += ['-e']
+        print("[sphinx-action] Running: {}".format(build_command))
+
         return_code = subprocess.call(
             build_command,
             env=dict(os.environ, SPHINXOPTS=sphinx_options),
             cwd=docs_directory
         )
     else:
+        build_command += shlex.split(sphinx_options)
+        print("[sphinx-action] Running: {}".format(build_command))
+
         return_code = subprocess.call(
             build_command + shlex.split(sphinx_options),
             cwd=docs_directory

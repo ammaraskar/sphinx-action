@@ -17,7 +17,7 @@ class TestAction(unittest.TestCase):
             action.extract_line_information(
                 'warnings_and_errors/index.rst: '
             ),
-            ('warnings_and_errors/index.rst', 1)
+            ('warnings_and_errors{}index.rst'.format(os.sep), 1)
         )
 
     def test_extract_line_information_with_line_info(self):
@@ -25,7 +25,7 @@ class TestAction(unittest.TestCase):
             action.extract_line_information(
                 'warnings_and_errors/contents.rst:19: '
             ),
-            ('warnings_and_errors/contents.rst', 19)
+            ('warnings_and_errors{}contents.rst'.format(os.sep), 19)
         )
 
     def test_extract_line_information_with_invalid_info(self):
@@ -96,6 +96,23 @@ class TestAction(unittest.TestCase):
         return_code, annotations = action.build_docs(
             'make html',
             os.path.join(TEST_PROJECTS_DIR, 'warnings_and_errors')
+        )
+        self.assertNotEqual(return_code, 0)
+        self.assertEqual(len(annotations), 1)
+
+        self.assertTrue(annotations[0].path.endswith('index.rst'))
+        self.assertEqual(annotations[0].start_line, 16)
+        self.assertEqual(annotations[0].end_line, 16)
+        self.assertIn(
+            'Error in "code-block" directive', annotations[0].message
+        )
+
+    def test_build_docs_with_different_makefile(self):
+        """Test some different styles of sphinx Makefiles that don't
+        use ?= for the options"""
+        return_code, annotations = action.build_docs(
+            'make html',
+            os.path.join(TEST_PROJECTS_DIR, 'different_makefile')
         )
         self.assertNotEqual(return_code, 0)
         self.assertEqual(len(annotations), 1)
