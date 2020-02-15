@@ -3,7 +3,7 @@ description: 'Builds documentation using Sphinx'
 author: 'Ammar Askar'
 branding:
   icon: 'book'
-  color: 'blue'
+  color: 'yellow'
 inputs:
   docs-folder:
     description:
