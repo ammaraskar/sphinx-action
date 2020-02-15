@@ -16,6 +16,7 @@ if __name__ == "__main__":
     # the merge commit.
     if "GITHUB_HEAD_REF" in os.environ:
         sha = os.environ["GITHUB_HEAD_REF"]
+        print("[sphinx-action] Using HEAD_REF: {}".format(sha))
 
     github_env = action.GithubEnvironment(
         sha=os.environ["GITHUB_SHA"],
