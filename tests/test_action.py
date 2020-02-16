@@ -112,12 +112,7 @@ class TestAction(unittest.TestCase):
 
     def test_build_all_docs_success(self):
         action.build_all_docs(
-            action.GithubEnvironment(
-                sha="sha1hash",
-                repo="ammaraskar/sphinx-action",
-                token="SecretToken1",
-                build_command="make html",
-            ),
+            action.GithubEnvironment(build_command="make html",),
             [
                 os.path.join(TEST_PROJECTS_DIR, "no_errors"),
                 os.path.join(TEST_PROJECTS_DIR, "warnings"),
@@ -127,12 +122,7 @@ class TestAction(unittest.TestCase):
     def test_build_all_docs_some_success(self):
         with self.assertRaisesRegex(RuntimeError, "Build failed"):
             action.build_all_docs(
-                action.GithubEnvironment(
-                    sha="sha1hash",
-                    repo="ammaraskar/sphinx-action",
-                    token="SecretToken1",
-                    build_command="make html",
-                ),
+                action.GithubEnvironment(build_command="make html",),
                 [
                     os.path.join(TEST_PROJECTS_DIR, "no_errors"),
                     os.path.join(TEST_PROJECTS_DIR, "warnings_and_errors"),

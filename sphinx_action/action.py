@@ -7,9 +7,7 @@ import shlex
 from sphinx_action import status_check
 
 
-GithubEnvironment = collections.namedtuple(
-    "GithubEnvironment", ["sha", "repo", "token", "build_command"]
-)
+GithubEnvironment = collections.namedtuple("GithubEnvironment", ["build_command"])
 
 
 def extract_line_information(line_information):
