@@ -10,11 +10,6 @@ inputs:
       The folder containing your sphinx docs.
     required: true
     default: "docs/"
-  repo-token:
-    description: 
-      The GITHUB_TOKEN secret.
-      Needed for status check with in-line warnings and errors. Check out the
-      full README to see how to fill this.
   build-command:
     description:
       The command used to build your documentation.

@@ -1,3 +1,1 @@
 sphinx==2.2.0
-requests==2.22.0
-black

@@ -143,14 +143,6 @@ def build_all_docs(github_env, docs_directories):
     if len(docs_directories) == 0:
         raise ValueError("Please provide at least one docs directory to build")
 
-    # Optionally, if they've provided us with a GITHUB_TOKEN, we output
-    # warnings to the status check.
-    if github_env.token:
-        status_id = status_check.create_in_progress_status_check(
-            github_env.token, github_env.sha, github_env.repo
-        )
-        print("[sphinx-action] Created check with id={}".format(status_id))
-
     build_success = True
     warnings = 0
 
@@ -165,34 +157,13 @@ def build_all_docs(github_env, docs_directories):
 
         warnings += len(annotations)
 
-        if github_env.token:
-            check_output = status_check.CheckOutput(
-                title="Sphinx Documentation Build",
-                summary="Building with {} warnings".format(warnings),
-                annotations=annotations,
-            )
-            print("[sphinx-action] Updating status check with ", check_output)
-            status_check.update_status_check(
-                status_id, github_env.token, github_env.repo, check_output
-            )
+        for annotation in annotations:
+            status_check.output_annotation(annotation)
 
-    status_message = "Build {} with {} warnings".format(
+    status_message = "[sphinx-action] Build {} with {} warnings".format(
         "succeeded" if build_success else "failed", warnings
     )
     print(status_message)
-
-    if github_env.token:
-        check_output = status_check.CheckOutput(
-            title="Sphinx Documentation Build", summary=status_message, annotations=[]
-        )
-        conclusion = status_check.StatusConclusion.from_build_succeeded(build_success)
-        status_check.update_status_check(
-            status_id,
-            github_env.token,
-            github_env.repo,
-            check_output,
-            conclusion=conclusion,
-        )
 
     if not build_success:
         raise RuntimeError("Build failed")

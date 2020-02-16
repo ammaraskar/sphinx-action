@@ -110,11 +110,7 @@ class TestAction(unittest.TestCase):
         self.assertEqual(annotations[0].end_line, 16)
         self.assertIn('Error in "code-block" directive', annotations[0].message)
 
-    @mock.patch("sphinx_action.status_check.create_in_progress_status_check")
-    @mock.patch("sphinx_action.status_check.update_status_check")
-    def test_build_all_docs_success(self, update_mock, create_mock):
-        create_mock.return_value = 42
-
+    def test_build_all_docs_success(self):
         action.build_all_docs(
             action.GithubEnvironment(
                 sha="sha1hash",
@@ -128,32 +124,7 @@ class TestAction(unittest.TestCase):
             ],
         )
 
-        create_mock.assert_called_once_with(
-            "SecretToken1", "sha1hash", "ammaraskar/sphinx-action"
-        )
-
-        self.assertEqual(len(update_mock.call_args_list), 3)
-        self.assertEqual(update_mock.call_args_list[0][0][0], 42)
-        self.assertEqual(update_mock.call_args_list[1][0][0], 42)
-        self.assertEqual(update_mock.call_args_list[2][0][0], 42)
-
-        update_mock.assert_called_with(
-            42,
-            "SecretToken1",
-            "ammaraskar/sphinx-action",
-            status_check.CheckOutput(
-                title="Sphinx Documentation Build",
-                summary="Build succeeded with 3 warnings",
-                annotations=[],
-            ),
-            conclusion="success",
-        )
-
-    @mock.patch("sphinx_action.status_check.create_in_progress_status_check")
-    @mock.patch("sphinx_action.status_check.update_status_check")
-    def test_build_all_docs_some_success(self, update_mock, create_mock):
-        create_mock.return_value = 41
-
+    def test_build_all_docs_some_success(self):
         with self.assertRaisesRegex(RuntimeError, "Build failed"):
             action.build_all_docs(
                 action.GithubEnvironment(
@@ -167,27 +138,6 @@ class TestAction(unittest.TestCase):
                     os.path.join(TEST_PROJECTS_DIR, "warnings_and_errors"),
                 ],
             )
-
-        create_mock.assert_called_once_with(
-            "SecretToken1", "sha1hash", "ammaraskar/sphinx-action"
-        )
-
-        self.assertEqual(len(update_mock.call_args_list), 3)
-        self.assertEqual(update_mock.call_args_list[0][0][0], 41)
-        self.assertEqual(update_mock.call_args_list[1][0][0], 41)
-        self.assertEqual(update_mock.call_args_list[2][0][0], 41)
-
-        update_mock.assert_called_with(
-            41,
-            "SecretToken1",
-            "ammaraskar/sphinx-action",
-            status_check.CheckOutput(
-                title="Sphinx Documentation Build",
-                summary="Build failed with 1 warnings",
-                annotations=[],
-            ),
-            conclusion="failure",
-        )
 
 
 if __name__ == "__main__":
