@@ -32,6 +32,13 @@ inputs:
       A list of additional 'apt' packages to install before running
       sphinx. (Setting this will force-enable 'update' as well.)
     required: false
+  container:
+    description:
+      Run the build in the named container. Must be one of
+      'sphinx4', 'pdflatex', or 'default'.
+    required: false
+    default: 'default'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: ${{ format('Dockerfile.{0}', inputs.container) }}
+
