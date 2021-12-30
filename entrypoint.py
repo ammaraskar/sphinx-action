@@ -9,10 +9,12 @@ from sphinx_action import action
 # Github specific setup is done here to make it easy to test the action code
 # in isolation.
 
+
 def interpret_env(env_var):
     if isinstance(env_var, str):
         return env_var.lower() not in ["false", "no", "off" "0"]
     return bool(env_var)
+
 
 if __name__ == "__main__":
     print("[sphinx-action] Starting sphinx-action build.")
