@@ -69,7 +69,7 @@ Or to push docs changes automatically to a `gh-pages` branch:
 ```yaml
     - name: Commit documentation changes
       run: |
-        git clone https://github.com/ammaraskar/sphinx-action-test.git --branch gh-pages --single-branch gh-pages
+        git clone https://github.com/your_git/repository.git --branch gh-pages --single-branch gh-pages
         cp -r docs/_build/html/* gh-pages/
         cd gh-pages
         git config --local user.email "action@github.com"
