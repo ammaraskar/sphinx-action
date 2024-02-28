@@ -1,4 +1,4 @@
-FROM sphinxdoc/sphinx:5.2.0
+FROM sphinxdoc/sphinx:5.2.1
 
 LABEL "maintainer"="Ammar Askar <ammar@ammaraskar.com>"
 
