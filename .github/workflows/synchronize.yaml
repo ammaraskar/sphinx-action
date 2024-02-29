@@ -1,0 +1,18 @@
+name: Daily check for new Sphinx dockers to build against.
+
+on:
+  schedule:
+    # Runs at midnight UTC every day.
+    - cron:  '0 0 * * *'
+
+jobs:
+  run-shell-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run a shell script
+        run: |
+          ./bin/tryrelease
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
