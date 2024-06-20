@@ -2,7 +2,7 @@
 #
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+# https://www.sphinx-doc.org/en/main/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
 
@@ -50,4 +50,4 @@ html_theme = "alabaster"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
-master_doc = "index"
+main_doc = "index"

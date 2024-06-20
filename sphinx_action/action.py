@@ -13,13 +13,13 @@ GithubEnvironment = collections.namedtuple("GithubEnvironment", ["build_command"
 def extract_line_information(line_information):
     r"""Lines from sphinx log files look like this
 
-        C:\Users\ammar\workspace\sphinx-action\tests\test_projects\warnings\index.rst:22: WARNING: Problems with "include" directive path:
+        C:\Users\user\workspace\sphinx-action\tests\test_projects\warnings\index.rst:22: WARNING: Problems with "include" directive path:
         InputError: [Errno 2] No such file or directory: 'I_DONT_EXIST'.
 
-        /home/users/ammar/workspace/sphix-action/tests/test_projects/warnings/index.rst:22: WARNING: Problems with "include" directive path:
+        /home/users/user/workspace/sphix-action/tests/test_projects/warnings/index.rst:22: WARNING: Problems with "include" directive path:
         InputError: [Errno 2] No such file or directory: 'I_DONT_EXIST'.
 
-        /home/users/ammar/workspace/sphix-action/tests/test_projects/warnings/index.rst: Something went wrong with this whole ifle
+        /home/users/user/workspace/sphix-action/tests/test_projects/warnings/index.rst: Something went wrong with this whole ifle
 
     This method is responsible for parsing out the line number and file name from these lines.
     """

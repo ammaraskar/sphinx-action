@@ -1,9 +1,9 @@
-name: 'Sphinx Build'
+name: 'Sphinx Build Continued'
 description: 'Builds documentation using Sphinx'
-author: 'Ammar Askar'
+author: 'Freya Gustavsson'
 branding:
-  icon: 'book'
-  color: 'yellow'
+  icon: 'bookmark'
+  color: 'red'
 inputs:
   docs-folder:
     description:
@@ -23,4 +23,4 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'Containerfile'
