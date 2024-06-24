@@ -112,7 +112,7 @@ build, you can use the `pre-build-command` argument like so:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs2/"
-        pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
+        pre-build-command: "apt-get --allow-releaseinfo-change update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
         build-command: "make latexpdf"
 ```
 
