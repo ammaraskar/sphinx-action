@@ -1,4 +1,5 @@
-FROM sphinxdoc/sphinx:2.4.4
+ARG SPHINX_TAG=latest
+FROM sphinxdoc/sphinx:${SPHINX_TAG}
 
 LABEL "maintainer"="Ammar Askar <ammar@ammaraskar.com>"
 

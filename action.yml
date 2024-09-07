@@ -10,6 +10,11 @@ inputs:
       The folder containing your sphinx docs.
     required: true
     default: "docs/"
+  sphinx-tag:
+    description:
+      The tag to use for sphinxdoc/sphinx.
+    required: false
+    default: "2.4.4"
   build-command:
     description:
       The command used to build your documentation.
@@ -22,5 +27,18 @@ inputs:
       "apt-get update -y && apt-get install -y perl"
     required: false
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - id: github
+      name: Infer GitHub action repository and ref from GitHub action path
+      uses: pl-strflt/docker-container-action/.github/actions/github@v1
+    - uses: pl-strflt/docker-container-action@v1
+      env:
+        INPUT_DOCS-FOLDER: ${{ inputs.docs-folder }}
+        INPUT_BUILD-COMMAND: ${{ inputs.build-command }}
+        INPUT_PRE-BUILD-COMMAND: ${{ inputs.pre-build-command }}
+      with:
+        repository: ${{ steps.github.outputs.action_repository }}
+        ref: ${{ steps.github.outputs.action_ref }}
+        build-args: |
+          SPHINX_TAG:${{ inputs.sphinx-tag }}
