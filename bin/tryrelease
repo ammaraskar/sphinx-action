@@ -3,17 +3,16 @@
 DOCKERFILE="Dockerfile"
 : ${RUNNER_TEMP:=/tmp}
 
-
 fetch_current_tags() {
   gh api repos/:owner/:repo/git/refs/tags \
-    --jq '.[]' -q '.[] | .ref' | 
+    --jq '.[]' -q '.[] | .ref' |
     cut -d'/' -f3 |
     sort
 }
 
 fetch_sphinx_image_tags() {
   gh api repos/sphinx-doc/sphinx-docker-images/git/refs/tags \
-    --jq '.[]' -q '.[] | .ref' | 
+    --jq '.[]' -q '.[] | .ref' |
     cut -d'/' -f3 |
     sort
 }
@@ -30,8 +29,10 @@ while IFS= read -r tag; do
 
     git add "$DOCKERFILE"
     git commit --message "build(release): release version ${tag}"
-    git tag "$tag" 
-    git push --tags
+    git tag "$tag"
+
+    # Push the commit to the remote tag reference without updating a branch
+    git push origin HEAD:refs/tags/"$tag"
 done < "$NEW_TAGS"
 
 rm "$NEW_TAGS"
