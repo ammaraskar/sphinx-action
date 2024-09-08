@@ -36,6 +36,10 @@ jobs:
         docs-folder: "docs/"
 ```
 
+* You can choose a Sphinx version by using the appropriate tag. For example, to
+  specify Sphinx 7.0.0 you would use `ammaraskar/sphinx-action@7.0.0`. `master`
+  currently uses Sphinx 2.4.4.
+
 * If you have any Python dependencies that your project needs (themes, 
 build tools, etc) then place them in a requirements.txt file inside your docs
 folder.

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+DOCKERFILE="Dockerfile"
+: ${RUNNER_TEMP:=/tmp}
+
+
+fetch_current_tags() {
+  gh api repos/:owner/:repo/git/refs/tags \
+    --jq '.[]' -q '.[] | .ref' | 
+    cut -d'/' -f3 |
+    sort
+}
+
+fetch_sphinx_image_tags() {
+  gh api repos/sphinx-doc/sphinx-docker-images/git/refs/tags \
+    --jq '.[]' -q '.[] | .ref' | 
+    cut -d'/' -f3 |
+    sort
+}
+
+NEW_TAGS="${RUNNER_TEMP}/new_tags.txt"
+comm -13 <(fetch_current_tags) <(fetch_sphinx_image_tags) > "$NEW_TAGS"
+if [ ! -s "$NEW_TAGS" ]; then
+    echo "No new tags found."
+    exit 0
+fi
+
+while IFS= read -r tag; do
+    sed -i "1s#.*#FROM sphinxdoc/sphinx:${tag}#g" "$DOCKERFILE"
+
+    git add "$DOCKERFILE"
+    git commit --message "build(release): release version ${tag}"
+    git tag "$tag" 
+    git push --tags
+done < "$NEW_TAGS"
+
+rm "$NEW_TAGS"
+
