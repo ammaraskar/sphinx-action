@@ -34,6 +34,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
+        sphinx-tag: "latest"
 ```
 
 * If you have any Python dependencies that your project needs (themes, 
@@ -42,6 +43,9 @@ folder.
 
 * If you have multiple sphinx documentation folders, please use multiple
   `uses` blocks.
+
+* If you wish to use a specific version of Sphinx, edit the `sphinx-tag` line in the configuration
+above.
 
 For a full example repo using this action including advanced usage, take a look
 at https://github.com/ammaraskar/sphinx-action-test
