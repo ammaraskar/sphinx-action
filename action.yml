@@ -31,8 +31,8 @@ runs:
   steps:
     - id: github
       name: Infer GitHub action repository and ref from GitHub action path
-      uses: pl-strflt/docker-container-action/.github/actions/github@v1
-    - uses: pl-strflt/docker-container-action@v1
+      uses: ipdxco/docker-container-action/.github/actions/github@v1
+    - uses: ipdxco/docker-container-action@v1
       env:
         INPUT_DOCS-FOLDER: ${{ inputs.docs-folder }}
         INPUT_BUILD-COMMAND: ${{ inputs.build-command }}
