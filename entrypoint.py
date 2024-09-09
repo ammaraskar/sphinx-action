@@ -11,8 +11,9 @@ if __name__ == "__main__":
 
     if "INPUT_PRE-BUILD-COMMAND" in os.environ:
         pre_command = os.environ["INPUT_PRE-BUILD-COMMAND"]
-        print("Running: {}".format(pre_command))
-        os.system(pre_command)
+        if len (pre_command) > 0:  # Check for empty string
+            print("Running: {}".format(pre_command))
+            os.system(pre_command)
 
     github_env = action.GithubEnvironment(
         build_command=os.environ.get("INPUT_BUILD-COMMAND"),
