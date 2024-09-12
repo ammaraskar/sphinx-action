@@ -21,6 +21,24 @@ inputs:
       dependencies, for example with
       "apt-get update -y && apt-get install -y perl"
     required: false
+  update:
+    description:
+      Set this flag to run 'apt update' in the container before starting
+      the sphinx build.
+    required: false
+    default: false
+  install:
+    description:
+      A list of additional 'apt' packages to install before running
+      sphinx. (Setting this will force-enable 'update' as well.)
+    required: false
+  container:
+    description:
+      Run the build in the named container. Must be one of
+      'sphinx4', 'pdflatex', or 'default'.
+    required: false
+    default: 'default'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: ${{ format('Dockerfile.{0}', inputs.container) }}
+
