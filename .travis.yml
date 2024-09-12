@@ -2,7 +2,7 @@ language: python
 python:
   - "3.7"
 install:
-  - pip install sphinx==2.2.0
+  - pip install sphinx==3.0
   - pip install black codecov coverage
 script:
   - black --check entrypoint.py sphinx_action tests
